@@ -24,14 +24,14 @@ func TestNewLineItemReconReport(t *testing.T) {
 		t.Fatalf("Unexpected error initializing report: %v", err)
 	}
 
-	actual := len(lirReport.GetRawLines())
-	expected := len(testCsv) - 1
+	orders := lirReport.GetOrders()
+	actual := len(orders)
+	expected := 1
 	if actual != expected {
-		t.Fatalf("Report contained %d raw lines, expected %d", actual, expected)
+		t.Fatalf("Report contained %d orders, expected %d", actual, expected)
 	}
 
-	if _, ok := lirReport.Orders[testOrderID]; !ok {
+	if _, ok := orders[testOrderID]; !ok {
 		t.Fatalf("Report did not contain expected order ID %d", testOrderID)
 	}
-
 }
