@@ -17,10 +17,21 @@ func TestNewLineItemReconReport(t *testing.T) {
 		`"12345678","2020-02-12 09:27 PM","Item Fee - FEE per Ticket","John Doe","","2.00","","Visa","","Online"`,
 		`"12345678","2020-02-12 09:27 PM","Payment","John Doe","","","45.00","Visa","","Online"`,
 	}
+	testOrderID := 12345678
 
-	lirReport, _ := artspeople.NewLineItemReconReport(bytes.NewBufferString(strings.Join(testCsv, "\n")))
-
-	if len(lirReport.GetRawLines()) != len(testCsv) {
-		t.Fatalf("Report contained %d raw lines, expected %d", len(lirReport.GetRawLines()), len(testCsv))
+	lirReport, err := artspeople.NewLineItemReconReport(bytes.NewBufferString(strings.Join(testCsv, "\n")))
+	if err != nil {
+		t.Fatalf("Unexpected error initializing report: %v", err)
 	}
+
+	actual := len(lirReport.GetRawLines())
+	expected := len(testCsv) - 1
+	if actual != expected {
+		t.Fatalf("Report contained %d raw lines, expected %d", actual, expected)
+	}
+
+	if _, ok := lirReport.Orders[testOrderID]; !ok {
+		t.Fatalf("Report did not contain expected order ID %d", testOrderID)
+	}
+
 }
