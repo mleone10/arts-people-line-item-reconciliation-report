@@ -6,6 +6,11 @@ type Order struct {
 	LineItems []*LineItem
 }
 
+// NewOrder returns an instantiated Order.
+func NewOrder() *Order {
+	return &Order{}
+}
+
 // AddLineItem appends a LineItem to the given Order.
 func (o *Order) AddLineItem(li *LineItem) {
 	o.LineItems = append(o.LineItems, li)

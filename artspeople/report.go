@@ -16,7 +16,6 @@ type LineItemReconReport struct {
 func NewLineItemReconReport(reportCsv io.Reader) (*LineItemReconReport, error) {
 	lirReport := LineItemReconReport{}
 
-	// TODO: Optimize report initialization by parsing lines and orders while we read the input.
 	err := lirReport.readInput(reportCsv)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to parse input CSV: %v", err)
@@ -53,14 +52,18 @@ func (l *LineItemReconReport) parseRawLines() error {
 	}
 
 	for _, rl := range l.rawLines {
+		// Use the raw line to create a LineItem.
 		li, err := NewLineItem(rl)
 		if err != nil {
 			return fmt.Errorf("Failed to parse line [%s]: %v", rl, err)
 		}
 
+		// If this is the first Line for a given order, instantiate a new Order struct.
 		if _, ok := l.Orders[li.OrderID]; !ok {
-			l.Orders[li.OrderID] = &Order{}
+			l.Orders[li.OrderID] = NewOrder()
 		}
+
+		// Add the LineItem to the Order with the LineItem's OrderID.
 		l.Orders[li.OrderID].AddLineItem(li)
 	}
 
