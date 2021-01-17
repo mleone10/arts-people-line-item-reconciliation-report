@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"time"
 )
 
 const (
@@ -20,6 +21,9 @@ const (
 	lineIndexUsername
 )
 
+// TODO: Import a currency package instead, just to be safe
+type currency float64
+
 // A LineItemReconReport is a parsed and type-normalized version of the Line Item Reconciliation Report downloaded from Arts People.
 type LineItemReconReport struct {
 	rawLines [][]string
@@ -34,8 +38,17 @@ type Order struct {
 
 // A LineItem represents a single piece of an order, such as a ticket, membership, donation, or payment.
 type LineItem struct {
-	rawLine []string
-	OrderID int
+	rawLine       []string
+	OrderID       int
+	DateTime      time.Time
+	ItemName      string
+	Customer      string
+	Price         currency
+	Fees          currency
+	PurchaseTotal currency
+	PaymentMethod string
+	GCUsed        bool
+	Username      string
 }
 
 // NewLineItemReconReport accepts an Arts People Line Item Reconciliation Report as an io.Reader and returns a fully parsed and type-normalized LineItemReconReport.
