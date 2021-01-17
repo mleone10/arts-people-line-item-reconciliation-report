@@ -9,6 +9,15 @@ import (
 
 const (
 	lineIndexOrderID = iota
+	lineIndexDateTime
+	lineIndexItemName
+	lineIndexCustomer
+	lineIndexPrice
+	lineIndexFees
+	lineIndexPurchaseTotal
+	lineIndexPaymentMethod
+	lineIndexGCUsed
+	lineIndexUsername
 )
 
 // A LineItemReconReport is a parsed and type-normalized version of the Line Item Reconciliation Report downloaded from Arts People.
@@ -18,6 +27,7 @@ type LineItemReconReport struct {
 }
 
 // An Order represents all details of a single interaction with a customer, including all items purchased and the payment method.
+// TODO: Consider converting from a struct to a type alias ([]*LineItem)
 type Order struct {
 	LineItems []*LineItem
 }
@@ -32,6 +42,7 @@ type LineItem struct {
 func NewLineItemReconReport(reportCsv io.Reader) (*LineItemReconReport, error) {
 	lirReport := LineItemReconReport{}
 
+	// TODO: Optimize report initialization by parsing lines and orders while we read the input.
 	err := lirReport.readInput(reportCsv)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to parse input CSV: %v", err)
@@ -46,6 +57,8 @@ func NewLineItemReconReport(reportCsv io.Reader) (*LineItemReconReport, error) {
 }
 
 // NewLineItem accepts an array of strings read in from the original CSV and returns an initiatlized LineItem.
+// TODO: Move LineItem code to its own file
+// TODO: Implement remainder of rawLine parsing
 func NewLineItem(rawLine []string) (*LineItem, error) {
 	orderID, err := strconv.Atoi(rawLine[lineIndexOrderID])
 	if err != nil {
@@ -58,6 +71,7 @@ func NewLineItem(rawLine []string) (*LineItem, error) {
 }
 
 // GetRawLines returns the raw list of strings read in when creating the given LineItemReconReport.
+// TODO: Remove this once LineItem parsing is implemented
 func (l *LineItemReconReport) GetRawLines() [][]string {
 	return l.rawLines
 }
