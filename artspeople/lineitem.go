@@ -24,6 +24,7 @@ const (
 	numExpectedFields        = 10
 	artsPeopleDateTimeFormat = "2006-01-02 03:04 PM"
 	artsPeopleDateTimeZone   = "America/New_York"
+	itemNamePayment          = "Payment"
 )
 
 // A LineItem represents a single piece of an order, such as a ticket, membership, donation, or payment.
@@ -97,4 +98,9 @@ func NewLineItem(rawLine []string) (*LineItem, error) {
 
 func getStringIndex(rl []string, i int) string {
 	return strings.TrimSpace(rl[i])
+}
+
+// IsPayment returns true if the given LineItem pertains to a payment.
+func (li *LineItem) IsPayment() bool {
+	return li.ItemName == itemNamePayment
 }

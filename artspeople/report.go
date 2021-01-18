@@ -63,3 +63,35 @@ func (l *LineItemReconReport) parseRawLines() error {
 
 	return nil
 }
+
+// GetItems returns a slice of all item names mentioned in the report.
+func (l *LineItemReconReport) GetItems() []string {
+	is := map[string]bool{}
+	for _, o := range l.Orders {
+		for _, i := range o.GetItems() {
+			is[i] = true
+		}
+	}
+
+	retItems := []string{}
+	for i := range is {
+		retItems = append(retItems, i)
+	}
+
+	return retItems
+}
+
+// GetCustomers returns a slice of all unique customers who have an order in the report.
+func (l *LineItemReconReport) GetCustomers() []string {
+	cs := map[string]bool{}
+	for _, o := range l.Orders {
+		cs[o.GetCustomer()] = true
+	}
+
+	retCusts := []string{}
+	for c := range cs {
+		retCusts = append(retCusts, c)
+	}
+
+	return retCusts
+}

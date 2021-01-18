@@ -8,8 +8,11 @@ import (
 )
 
 func main() {
-	_, err := artspeople.NewLineItemReconReport(os.Stdin)
+	r, err := artspeople.NewLineItemReconReport(os.Stdin)
 	if err != nil {
 		log.Fatalf("Failed to read line item reconciliation report: %v", err)
 	}
+
+	log.Println(r.GetCustomers())
+	log.Println(r.GetItems())
 }

@@ -103,3 +103,16 @@ func TestNewLineItem_InvalidOrderID(t *testing.T) {
 		t.Fatalf("Expected an error while parsing a non-int order ID")
 	}
 }
+
+func TestIsPayment(t *testing.T) {
+	paymentItem := artspeople.LineItem{ItemName: "Payment"}
+	nonPaymentItem := artspeople.LineItem{ItemName: "NotAPayment"}
+
+	if !paymentItem.IsPayment() {
+		t.Errorf("Expected payment item was not determined to be a payment")
+	}
+
+	if nonPaymentItem.IsPayment() {
+		t.Errorf("Expected nonPayment item was determined to be a payment")
+	}
+}

@@ -15,3 +15,20 @@ func NewOrder() *Order {
 func (o *Order) AddLineItem(li *LineItem) {
 	o.LineItems = append(o.LineItems, li)
 }
+
+// GetCustomer returns the customer whose name is attached to the items in this order.  Sample data suggests that, while each LineItem has its own customer field, they are all identical.
+func (o *Order) GetCustomer() string {
+	return o.LineItems[0].Customer
+}
+
+// GetItems returns a slice of all items contained within the order, excluding payments.
+func (o *Order) GetItems() []string {
+	is := []string{}
+	for _, li := range o.LineItems {
+		i := li.ItemName
+		if !li.IsPayment() {
+			is = append(is, i)
+		}
+	}
+	return is
+}
