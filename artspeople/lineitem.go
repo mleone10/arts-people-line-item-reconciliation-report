@@ -26,9 +26,6 @@ const (
 	artsPeopleDateTimeZone   = "America/New_York"
 )
 
-// A Currency is a representation of money within Arts People.  Since we're parsing these from strings, we have some flexibility around how we represent these values.
-type Currency int64
-
 // A LineItem represents a single piece of an order, such as a ticket, membership, donation, or payment.
 type LineItem struct {
 	rawLine       []string
@@ -67,19 +64,19 @@ func NewLineItem(rawLine []string) (*LineItem, error) {
 	}
 
 	// Parse the item price
-	price, err := getCurrencyIndex(rawLine, lineIndexPrice)
+	price, err := NewCurrencyFromString(getStringIndex(rawLine, lineIndexPrice))
 	if err != nil {
 		return nil, fmt.Errorf("could not parse price: %v", err)
 	}
 
 	// Parse the item's fees
-	fees, err := getCurrencyIndex(rawLine, lineIndexFees)
+	fees, err := NewCurrencyFromString(getStringIndex(rawLine, lineIndexFees))
 	if err != nil {
 		return nil, fmt.Errorf("could not parse fees: %v", err)
 	}
 
 	// Parse the order's purchase total
-	purchaseTotal, err := getCurrencyIndex(rawLine, lineIndexPurchaseTotal)
+	purchaseTotal, err := NewCurrencyFromString(getStringIndex(rawLine, lineIndexPurchaseTotal))
 	if err != nil {
 		return nil, fmt.Errorf("could not parse purchase total: %v", err)
 	}
@@ -100,37 +97,4 @@ func NewLineItem(rawLine []string) (*LineItem, error) {
 
 func getStringIndex(rl []string, i int) string {
 	return strings.TrimSpace(rl[i])
-}
-
-func getCurrencyIndex(rl []string, i int) (Currency, error) {
-	s := getStringIndex(rl, i)
-	if s == "" {
-		return Currency(0), nil
-	}
-
-	// From https://stackoverflow.com/a/51660442
-	// Split the raw currency string into, at most, 3 parts.  If, however, there aren't two parts or if the "cents" part isn't two digits, throw an error.
-	n := strings.SplitN(s, ".", 3)
-	if len(n) != 2 || len(n[1]) != 2 {
-		return 0, fmt.Errorf("split currency field [%v]appears incorrect", s)
-	}
-
-	// Parse the "dollars" part into an integer of at most 56 bits.
-	d, err := strconv.ParseInt(n[0], 10, 56)
-	if err != nil {
-		return 0, fmt.Errorf("failed to parse dollars part of currency [%v]: %v", s, err)
-	}
-
-	// Parse the "cents" part into an integer of at most 8 bits.
-	c, err := strconv.ParseUint(n[1], 10, 8)
-	if err != nil {
-		return 0, fmt.Errorf("failed to parse cents part of currency [%v]: %v", s, err)
-	}
-
-	// If the dollars part is negative, also negate the cents part.
-	if d < 0 {
-		c = -c
-	}
-
-	return Currency(d*100 + int64(c)), nil
 }
