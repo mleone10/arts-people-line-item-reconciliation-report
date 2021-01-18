@@ -39,42 +39,67 @@ func TestNewLineItem_ValidRawLine(t *testing.T) {
 	testItemName := "Donation"
 	if li.ItemName != testItemName {
 		t.Errorf("Expected item name %v, was actually %v", testItemName, li.ItemName)
-
 	}
 
 	testCustomer := "John Doe"
 	if li.Customer != testCustomer {
 		t.Errorf("Expected customer %v, was actually %v", testCustomer, li.Customer)
-
 	}
 
-	testPrice := artspeople.Currency(0.0)
+	testPrice := artspeople.Currency(2000)
 	if li.Price != testPrice {
 		t.Errorf("Expected price %v, was actually %v", testPrice, li.Price)
-
 	}
 
-	testFees := artspeople.Currency(0.0)
+	testFees := artspeople.Currency(3000)
 	if li.Fees != testFees {
 		t.Errorf("Expected fees %v, was actually %v", testFees, li.Fees)
-
 	}
 
-	testPurchaseTotal := artspeople.Currency(0.0)
+	testPurchaseTotal := artspeople.Currency(4000)
 	if li.PurchaseTotal != testPurchaseTotal {
 		t.Errorf("Expected purchase total %v, was actually %v", testPurchaseTotal, li.PurchaseTotal)
-
 	}
 
 	testPaymentMethod := "Visa"
 	if li.PaymentMethod != testPaymentMethod {
 		t.Errorf("Expected payment method %v, was actually %v", testPaymentMethod, li.PaymentMethod)
-
 	}
 
 	testUsername := "Online"
 	if li.Username != testUsername {
 		t.Errorf("Expected username %v, was actually %v", testUsername, li.Username)
+	}
+}
 
+func TestNewLineItem_NotEnoughFields(t *testing.T) {
+	testRawLine := []string{
+		"foo",
+		"bar",
+	}
+
+	_, err := artspeople.NewLineItem(testRawLine)
+	if err == nil {
+		t.Fatalf("Expected an error due to insufficient number of fields")
+	}
+}
+
+func TestNewLineItem_InvalidOrderID(t *testing.T) {
+	testRawLine := []string{
+		"invalidOrderID",
+		"2020-08-12 10:41 PM",
+		"Donation",
+		"John Doe",
+		"20.00",
+		"30.00",
+		"40.00",
+		"Visa",
+		"",
+		"Online",
+	}
+
+	_, err := artspeople.NewLineItem(testRawLine)
+	if err == nil {
+		t.Fatalf("Expected an error while parsing a non-int order ID")
 	}
 }
