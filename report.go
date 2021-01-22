@@ -1,3 +1,4 @@
+// Package artspeople provides a parser for the Arts People Line Item Reconciliation Report.  To create an instantiated LineItemReconReport struct, provide the text of the report's CSV representation into the NewLineItemReconReport() function.
 package artspeople
 
 import (
