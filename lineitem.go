@@ -38,7 +38,7 @@ type LineItem struct {
 	Fees          Currency
 	PurchaseTotal Currency
 	PaymentMethod string
-	GCUsed        string // This field does not appear to be used.  As such, we leave it as a string until test data exists.
+	GCUsed        string // Maybe not used?
 	Username      string
 }
 

@@ -3,7 +3,7 @@
 This package provides a parser for the [Arts People](https://www.arts-people.com/) Line Item Reconciliation report.
 
 ```
-package artspeople // import "github.com/mleone10/arts-people-reconciler"
+package artspeople // import "github.com/mleone10/artspeople"
 
 Package artspeople provides a parser for the Arts People Line Item
 Reconciliation Report. To create an instantiated LineItemReconReport struct,
@@ -30,7 +30,7 @@ type LineItem struct {
 	Fees          Currency
 	PurchaseTotal Currency
 	PaymentMethod string
-	GCUsed        string // This field does not appear to be used.  As such, we leave it as a string until test data exists.
+	GCUsed        string // Maybe not used?
 	Username      string
 	// Has unexported fields.
 }
