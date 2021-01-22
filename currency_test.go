@@ -3,7 +3,7 @@ package artspeople_test
 import (
 	"testing"
 
-	"github.com/mleone10/arts-people-reconciler/artspeople"
+	"github.com/mleone10/artspeople"
 )
 
 func TestNewCurrencyFromString_ValidCurrencyString(t *testing.T) {

@@ -1,3 +1,3 @@
-module github.com/mleone10/arts-people-reconciler
+module github.com/mleone10/artspeople
 
 go 1.15

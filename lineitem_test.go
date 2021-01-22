@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mleone10/arts-people-reconciler/artspeople"
+	"github.com/mleone10/artspeople"
 )
 
 func TestNewLineItem_ValidRawLine(t *testing.T) {

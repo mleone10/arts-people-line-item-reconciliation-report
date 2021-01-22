@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mleone10/arts-people-reconciler/artspeople"
+	"github.com/mleone10/artspeople"
 )
 
 func TestNewLineItemReconReport(t *testing.T) {
